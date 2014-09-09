@@ -12,8 +12,7 @@ int main()
         BigNum ans;
         while (file >> a >> b >> c)
         {
-            ans = BigNum(a) + BigNum(b);
-            assert(ans.get() == c);
+            assert(BigNum(a) + BigNum(b) == c);
         }
         std::cout << "Addition is good";
     }
