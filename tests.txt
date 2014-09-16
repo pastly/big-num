@@ -1,0 +1,39 @@
+0 0 true
+1 1 true
+0 1 false
+123 456 false
+789 789 true
+9879654651324654 9879654651324655 false
+2657987654 654987954654 false
+4679784545426687 4679784545426687 true
+-0 0 true
+-1 1 false
+-6546546548792351 6546546548792351 false
+-897987987654 0 false
+00000000 0 true
+-0000000 0 true
+-0 0000000 true
+-0 -000000 true
+
+----end-of-equals-tests--- next-is less-than
+
+0 1 true
+1 0 false
+0 0 false
+123 456 true
+6498798465 6498798465 false
+6498798465 6498798466 true
+-0 0 false
+-0 1 true
+-1 -0 true
+-1235234 9 true
+1234123 8 false
+
+----end-of-less-than-tests--- next-is not-equal
+
+0 0 false
+-0 0 false
+-1 1 true
+1 1 false
+-6548 6548 true
+-100 -100 false
