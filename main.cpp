@@ -5,16 +5,55 @@
 
 int main()
 {
-    std::ifstream file("addition-tests.txt");
+    std::ifstream file("tests.txt");
     if (file.is_open())
     {
         std::string a, b, c;
-        BigNum ans;
+        bool expected;
+
+        /// test ==
         while (file >> a >> b >> c)
         {
-            assert(BigNum(a) + BigNum(b) == c);
+            if (a == "----end-of-equals-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            if (c == "true") expected = true;
+            else             expected = false;
+            //std::cout << num1.getAsString() << (expected ? " == " : " != ") << num2.getAsString() << "\n";
+            assert ((num1 == num2) == expected);
         }
-        std::cout << "Addition is good";
+        //std::cout << "---------------------------------------\n";
+        std::cout << "== okay!\n";
+        //std::cout << "---------------------------------------\n";
+
+        /// test <
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-less-than-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            if (c == "true") expected = true;
+            else             expected = false;
+            //std::cout << num1.getAsString() << (expected ? " < " : " >= ") << num2.getAsString() << "\n";
+            assert ((num1 < num2) == expected);
+        }
+        std::cout << "<  okay!\n";
+
+        /// test !=
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-not-equal-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            if (c == "true") expected = true;
+            else             expected = false;
+            //std::cout << num1.getAsString() << (expected ? " != " : " = ") << num2.getAsString() << "\n";
+            assert ((num1 != num2) == expected);
+        }
+        std::cout << "!= okay!\n";
     }
     return 0;
 }
