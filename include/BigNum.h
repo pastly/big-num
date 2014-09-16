@@ -4,26 +4,35 @@
 #include <string>
 #include <vector>
 
-
-
-class BigNum
+namespace BigNum
 {
-    public:
-        std::string get();
-        BigNum operator+(BigNum that);
-        bool operator==(BigNum that)      {return this->get() == that.get();}
-        bool operator!=(BigNum that)      {return this->get() != that.get();}
-        bool operator==(std::string that) {return this->get() == that;}
-        bool operator!=(std::string that) {return this->get() == that;}
-        bool operator==(std::vector<char> that) {return this->m_value == that;}
-        bool operator!=(std::vector<char> that) {return this->m_value != that;}
-        BigNum();
-        BigNum(std::string val);
-        BigNum(std::vector<char> val);
-        virtual ~BigNum();
-    protected:
-    private:
-        std::vector<char> m_value;
-};
 
+    class BigNum
+    {
+        public:
+            std::string       getAsString()           const;
+            std::vector<char> getAbsValueCharVector() const {return m_value;}
+            bool              is_negative()           const {return m_negative;}
+            bool              is_positive()           const {return !is_negative();}
+            //BigNum operator+(BigNum that);
+            //BigNum operator-(BigNum that);
+            bool operator==(const BigNum& that) const;
+            bool operator> (const BigNum& that) const;
+            bool operator< (const BigNum& that) const {return   that  > *this ;}
+            bool operator!=(const BigNum& that) const {return !(*this == that);}
+            bool operator<=(const BigNum& that) const {return !(*this >  that);}
+            bool operator>=(const BigNum& that) const {return !(*this <  that);}
+            BigNum();
+            BigNum(std::string val);
+            BigNum(std::vector<char> absVal, bool neg = false);
+            virtual ~BigNum();
+        protected:
+        private:
+            std::vector<char> m_value;
+            bool m_negative;
+    };
+
+    BigNum abs(BigNum val);
+
+}
 #endif // BIGNUM_H

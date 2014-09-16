@@ -14,56 +14,117 @@ void flip(std::vector<char>* val)
     }
 }
 
-BigNum BigNum::operator+(BigNum that)
+namespace BigNum
 {
-    const auto maxdigits = 1+(this->get().length() > that.get().length() ? this->get().length() : that.get().length());
-    std::vector<char> arr1(maxdigits, '0');
-    std::vector<char> arr2(maxdigits, '0');
-    for (unsigned int i = 0; i < this->get().length(); i++)
-        arr1[this->get().length()-1-i] = this->get()[i];
-    for (unsigned int i = 0; i < that.get().length(); i++)
-        arr2[that.get().length()-1-i]  = that.get()[i];
-    int8_t carry = 0;
-    for (unsigned int i = 0; i < arr1.size(); i++)
+
+    /*BigNum BigNum::operator+(BigNum that)
     {
-        int8_t sum = char2digit(arr1[i]) + char2digit(arr2[i]) + carry;
-        carry = 0;
-        while (sum >= 10)
-            {carry++; sum -= 10;}
-        arr1[i] = digit2char(sum);
+        const auto maxdigits = 1+(this->get().length() > that.get().length() ? this->get().length() : that.get().length());
+        std::vector<char> arr1(maxdigits, '0');
+        std::vector<char> arr2(maxdigits, '0');
+        for (unsigned int i = 0; i < this->get().length(); i++)
+            arr1[this->get().length()-1-i] = this->get()[i];
+        for (unsigned int i = 0; i < that.get().length(); i++)
+            arr2[that.get().length()-1-i]  = that.get()[i];
+        int8_t carry = 0;
+        for (unsigned int i = 0; i < arr1.size(); i++)
+        {
+            int8_t sum = char2digit(arr1[i]) + char2digit(arr2[i]) + carry;
+            carry = 0;
+            while (sum >= 10)
+                {carry++; sum -= 10;}
+            arr1[i] = digit2char(sum);
+        }
+        while (arr1.size() > 1 && arr1[arr1.size()-1] == '0') arr1.pop_back();
+        flip(&arr1);
+        return BigNum(arr1);
     }
-    while (arr1.size() > 1 && arr1[arr1.size()-1] == '0') arr1.pop_back();
-    flip(&arr1);
-    return BigNum(arr1);
-}
 
-std::string BigNum::get()
-{
-    std::string val;
-    for (unsigned int i = 0; i < m_value.size(); i++)
-        val += m_value[i];
-    return val;
+    BigNum BigNum::operator-(BigNum that)
+    {
+        return BigNum("0");
+    }*/
 
-}
+    std::string BigNum::getAsString() const
+    {
+        std::string val = (m_negative ? "-" : "");
+        for (unsigned int i = 0; i < m_value.size(); i++)
+            val += m_value[i];
+        return val;
 
-BigNum::BigNum()
-{
-    m_value = std::vector<char>('0');
-}
+    }
 
-BigNum::BigNum(std::string val)
-{
-    m_value = std::vector<char>(val.length());
-    for (unsigned int i = 0; i < val.length(); i++)
-        m_value[i] = val[i];
-}
+    bool BigNum::operator==(const BigNum& that) const
+    {
+        return (this->getAbsValueCharVector() == that.getAbsValueCharVector())
+            && (this->is_negative()           == that.is_negative());
+    }
 
-BigNum::BigNum(std::vector<char> val)
-{
-    m_value = val;
-}
+    bool BigNum::operator>(const BigNum& that) const
+    {
+        if (this->is_positive() &&  that.is_negative()) return true;
+        else if (this->is_negative() && that.is_positive()) return false;
+        else if (this->getAbsValueCharVector().size() > that.getAbsValueCharVector().size()) return true;
+        else if (this->getAbsValueCharVector().size() < that.getAbsValueCharVector().size()) return false;
+        else
+        {
+            std::vector<char> a = this->getAbsValueCharVector();
+            std::vector<char> b = that.getAbsValueCharVector();
+            for (unsigned int i = 0; i < a.size(); i++)
+            {
+                if (char2digit(a[i]) > char2digit(b[i])) return true;
+                else if (char2digit(a[i]) < char2digit(b[i])) return false;
+            }
+        }
+        return false;
+    }
 
-BigNum::~BigNum()
-{
-    // dtor
+    BigNum::BigNum()
+    {
+        m_negative = false;
+        m_value = std::vector<char>('0');
+    }
+
+    BigNum::BigNum(std::string val)
+    {
+        if (val[0] == '-')
+        {
+            m_negative = true;
+            val = val.substr(1, std::string::npos);
+        }
+        else m_negative = false;
+        int startIndex = 0;
+        while (val[startIndex] == '0')
+            startIndex++;
+        val = val.substr(startIndex, std::string::npos);
+        if (val.length() == 0) val = "0";
+        if (val == "0") m_negative = false;
+        m_value = std::vector<char>(val.length());
+        for (unsigned int i = 0; i < val.length(); i++)
+            m_value[i] = val[i];
+
+    }
+
+    BigNum::BigNum(std::vector<char> absVal, bool neg)
+    {
+        int startIndex = 0;
+        while (absVal[startIndex] == '0')
+            startIndex++;
+        absVal = std::vector<char>(absVal.begin()+startIndex, absVal.end());
+        if (absVal.size() == 0) absVal = std::vector<char>({'0'});
+        if (absVal == std::vector<char>({'0'})) m_negative = false;
+        m_value = absVal;
+        m_negative = neg;
+    }
+
+    BigNum::~BigNum()
+    {
+        // dtor
+    }
+
+    BigNum abs(BigNum val)
+    {
+        return BigNum(val.getAbsValueCharVector());
+    }
+
 }
