@@ -22,9 +22,7 @@ int main()
             else             expected = false;
             assert ((num1 == num2) == expected);
         }
-        //std::cout << "---------------------------------------\n";
         std::cout << "== okay!\n";
-        //std::cout << "---------------------------------------\n";
 
         /// test <
         while (file >> a >> b >> c)
