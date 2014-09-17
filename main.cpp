@@ -20,7 +20,6 @@ int main()
             BigNum::BigNum num2(b);
             if (c == "true") expected = true;
             else             expected = false;
-            //std::cout << num1.getAsString() << (expected ? " == " : " != ") << num2.getAsString() << "\n";
             assert ((num1 == num2) == expected);
         }
         //std::cout << "---------------------------------------\n";
@@ -36,7 +35,6 @@ int main()
             BigNum::BigNum num2(b);
             if (c == "true") expected = true;
             else             expected = false;
-            //std::cout << num1.getAsString() << (expected ? " < " : " >= ") << num2.getAsString() << "\n";
             assert ((num1 < num2) == expected);
         }
         std::cout << "<  okay!\n";
@@ -50,10 +48,48 @@ int main()
             BigNum::BigNum num2(b);
             if (c == "true") expected = true;
             else             expected = false;
-            //std::cout << num1.getAsString() << (expected ? " != " : " = ") << num2.getAsString() << "\n";
             assert ((num1 != num2) == expected);
         }
         std::cout << "!= okay!\n";
+
+        /// test >
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-greater-than-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            if (c == "true") expected = true;
+            else             expected = false;
+            assert ((num1 > num2) == expected);
+        }
+        std::cout << ">  okay!\n";
+
+        /// test <=
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-less-than-or-equal-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            if (c == "true") expected = true;
+            else             expected = false;
+            assert ((num1 <= num2) == expected);
+        }
+        std::cout << "<= okay!\n";
+
+        /// test >=
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-greater-than-or-equal-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            if (c == "true") expected = true;
+            else             expected = false;
+            assert ((num1 >= num2) == expected);
+        }
+        std::cout << ">= okay!\n";
     }
     return 0;
 }

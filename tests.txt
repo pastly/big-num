@@ -15,7 +15,9 @@
 -0 0000000 true
 -0 -000000 true
 
-----end-of-equals-tests--- next-is less-than
+----end-of-equals-tests--- next-is
+
+less-than
 
 0 1 true
 1 0 false
@@ -29,7 +31,9 @@
 -1235234 9 true
 1234123 8 false
 
-----end-of-less-than-tests--- next-is not-equal
+----end-of-less-than-tests--- next-is
+
+not-equal
 
 0 0 false
 -0 0 false
@@ -37,3 +41,52 @@
 1 1 false
 -6548 6548 true
 -100 -100 false
+
+----end-of-not-equal-tests--- next-is
+
+greater-than
+
+0 0 false
+1 0 true
+0 1 false
+-0 0 false
+-0 -1 true
+8973598457394875293 8973598457394875293 false
+893742893647823 -893742893647823 true
+-893742893647823 893742893647823 false
+-12812 0 false
+12812 0 true
+-10 -10 false
+-10 -100 true
+
+----end-of-greater-than-tests--- next-is
+
+less-than-or-equal
+
+0 0 true
+-1 0 true
+1 0 false
+-0 0 true
+-10 123124123 true
+123123 -10 false
+987349873498236789623 987349873498236789623 true
+000000023423 23423 true
+23423 000000023423 true
+100 10 false
+-100 -10 true
+
+----end-of-less-than-or-equal-tests--- next-is
+
+greater-than-or-equal
+
+-0 0 true
+-10 -100 true
+0 -100 true
+-0 -100 true
+12312 -12312 true
+-12312 12312 false
+12312 12312 true
+
+----end-of-greater-than-or-equal-tests---
+
+
