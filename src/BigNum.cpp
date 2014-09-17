@@ -64,9 +64,11 @@ namespace BigNum
     {
         if (this->is_positive() &&  that.is_negative()) return true;
         else if (this->is_negative() && that.is_positive()) return false;
-        else if (this->getAbsValueCharVector().size() > that.getAbsValueCharVector().size()) return true;
-        else if (this->getAbsValueCharVector().size() < that.getAbsValueCharVector().size()) return false;
-        else
+        else if (this->is_positive() && this->getAbsValueCharVector().size() > that.getAbsValueCharVector().size()) return true;
+        else if (this->is_positive() && this->getAbsValueCharVector().size() < that.getAbsValueCharVector().size()) return false;
+        else if (this->is_negative() && this->getAbsValueCharVector().size() < that.getAbsValueCharVector().size()) return true;
+        else if (this->is_negative() && this->getAbsValueCharVector().size() > that.getAbsValueCharVector().size()) return false;
+        else if (this->is_positive())
         {
             std::vector<char> a = this->getAbsValueCharVector();
             std::vector<char> b = that.getAbsValueCharVector();
@@ -74,6 +76,16 @@ namespace BigNum
             {
                 if (char2digit(a[i]) > char2digit(b[i])) return true;
                 else if (char2digit(a[i]) < char2digit(b[i])) return false;
+            }
+        }
+        else // this->is_negative()
+        {
+            std::vector<char> a = this->getAbsValueCharVector();
+            std::vector<char> b = that.getAbsValueCharVector();
+            for (unsigned int i = 0; i < a.size(); i++)
+            {
+                if (char2digit(a[i]) < char2digit(b[i])) return true;
+                else if (char2digit(a[i]) > char2digit(b[i])) return false;
             }
         }
         return false;
