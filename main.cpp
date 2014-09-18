@@ -88,6 +88,32 @@ int main()
             assert ((num1 >= num2) == expected);
         }
         std::cout << ">= okay!\n";
+
+        std::cout << "\n";
+
+        /// test +
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-addition-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            std::cout << BigNum::BigNum(num1 + num2).toString() << " == " << c << "\n";
+            assert (BigNum::BigNum(num1 + num2).toString() == c);
+        }
+        std::cout << "+  okay!\n";
+
+        /// test -
+        while (file >> a >> b >> c)
+        {
+            if (a == "----end-of-subtraction-tests---") break;
+
+            BigNum::BigNum num1(a);
+            BigNum::BigNum num2(b);
+            std::cout << BigNum::BigNum(num1 - num2).toString() << " == " << c << "\n";
+            assert (BigNum::BigNum(num1 - num2).toString() == c);
+        }
+        std::cout << "-  okay!\n";
     }
     return 0;
 }
