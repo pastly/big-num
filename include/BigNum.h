@@ -10,12 +10,14 @@ namespace BigNum
     class BigNum
     {
         public:
-            std::string       getAsString()           const;
+            std::string toString() const;
             std::vector<char> getAbsValueCharVector() const {return m_value;}
-            bool              is_negative()           const {return m_negative;}
-            bool              is_positive()           const {return !is_negative();}
-            //BigNum operator+(BigNum that);
-            //BigNum operator-(BigNum that);
+            char getDigit(std::vector<char>::size_type i) const {return m_value[i];}
+            std::vector<char>::size_type getNumDigits() const {return m_value.size();}
+            bool is_negative() const {return m_negative;}
+            bool is_positive() const {return !is_negative();}
+            BigNum operator+ (const BigNum& that) const;
+            BigNum operator- (const BigNum& that) const;
             bool operator==(const BigNum& that) const;
             bool operator> (const BigNum& that) const;
             bool operator< (const BigNum& that) const {return   that  > *this ;}

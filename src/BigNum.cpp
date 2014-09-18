@@ -1,5 +1,7 @@
 #include "BigNum.h"
 
+#include <iostream>
+
 int8_t char2digit(char c) {return c-'0';}
 char digit2char(int8_t i) {return i+'0';}
 
@@ -16,36 +18,50 @@ void flip(std::vector<char>* val)
 
 namespace BigNum
 {
-
-    /*BigNum BigNum::operator+(BigNum that)
+    BigNum BigNum::operator+(const BigNum& that) const
     {
-        const auto maxdigits = 1+(this->get().length() > that.get().length() ? this->get().length() : that.get().length());
-        std::vector<char> arr1(maxdigits, '0');
-        std::vector<char> arr2(maxdigits, '0');
-        for (unsigned int i = 0; i < this->get().length(); i++)
-            arr1[this->get().length()-1-i] = this->get()[i];
-        for (unsigned int i = 0; i < that.get().length(); i++)
-            arr2[that.get().length()-1-i]  = that.get()[i];
-        int8_t carry = 0;
-        for (unsigned int i = 0; i < arr1.size(); i++)
+        // if values do not have same sign, subtract them
+        if (this->is_positive() != that.is_positive())
+            return *this - BigNum(that.getAbsValueCharVector(), !that.is_negative());
+        // make sure first is abs bigger than second
+        else if (abs(that) > abs(*this))
+            return that + *this;
+        // add them
+        else
         {
-            int8_t sum = char2digit(arr1[i]) + char2digit(arr2[i]) + carry;
-            carry = 0;
-            while (sum >= 10)
-                {carry++; sum -= 10;}
-            arr1[i] = digit2char(sum);
+            const auto maxDigits = 1+this->getNumDigits();
+            std::vector<char> arr1(maxDigits, '0');
+            std::vector<char> arr2(maxDigits, '0');
+            for (std::vector<char>::size_type i = 0; i < this->getNumDigits(); i++)
+                arr1[this->getNumDigits()-1-i] = this->getDigit(i);
+            for (std::vector<char>::size_type i = 0; i < that.getNumDigits(); i++)
+                arr2[that.getNumDigits()-1-i] = that.getDigit(i);
+            char carry = '0';
+            for (std::vector<char>::size_type i = 0; i < arr1.size(); i++)
+            {
+                int8_t sum = char2digit(arr1[i]) + char2digit(arr2[i]) + char2digit(carry);
+                carry = '0';
+                while (sum >= 10)
+                    {carry++; sum -= 10;}
+                arr1[i] = digit2char(sum);
+            }
+            while (arr1.size() > 1 && arr1[arr1.size()-1] == '0') arr1.pop_back();
+            flip(&arr1);
+            return BigNum(arr1, this->is_negative());
         }
-        while (arr1.size() > 1 && arr1[arr1.size()-1] == '0') arr1.pop_back();
-        flip(&arr1);
-        return BigNum(arr1);
+
     }
 
-    BigNum BigNum::operator-(BigNum that)
+    BigNum BigNum::operator-(const BigNum& that) const
     {
-        return BigNum("0");
-    }*/
+        // if they have the same sign, just add them after flipping sign on that
+        if (this->is_positive() == that.is_positive())
+            return *this + BigNum(that.getAbsValueCharVector(), !that.is_negative());
+        else
+            return *this + BigNum(that.getAbsValueCharVector(), this->is_negative());
+    }
 
-    std::string BigNum::getAsString() const
+    std::string BigNum::toString() const
     {
         std::string val = (m_negative ? "-" : "");
         for (unsigned int i = 0; i < m_value.size(); i++)
@@ -72,9 +88,9 @@ namespace BigNum
         {
             std::vector<char> a = this->getAbsValueCharVector();
             std::vector<char> b = that.getAbsValueCharVector();
-            for (unsigned int i = 0; i < a.size(); i++)
+            for (std::vector<char>::size_type i = 0; i < a.size(); i++)
             {
-                if (char2digit(a[i]) > char2digit(b[i])) return true;
+                if      (char2digit(a[i]) > char2digit(b[i])) return true;
                 else if (char2digit(a[i]) < char2digit(b[i])) return false;
             }
         }
@@ -82,9 +98,9 @@ namespace BigNum
         {
             std::vector<char> a = this->getAbsValueCharVector();
             std::vector<char> b = that.getAbsValueCharVector();
-            for (unsigned int i = 0; i < a.size(); i++)
+            for (std::vector<char>::size_type i = 0; i < a.size(); i++)
             {
-                if (char2digit(a[i]) < char2digit(b[i])) return true;
+                if      (char2digit(a[i]) < char2digit(b[i])) return true;
                 else if (char2digit(a[i]) > char2digit(b[i])) return false;
             }
         }
@@ -112,7 +128,7 @@ namespace BigNum
         if (val.length() == 0) val = "0";
         if (val == "0") m_negative = false;
         m_value = std::vector<char>(val.length());
-        for (unsigned int i = 0; i < val.length(); i++)
+        for (std::vector<char>::size_type i = 0; i < val.length(); i++)
             m_value[i] = val[i];
 
     }
