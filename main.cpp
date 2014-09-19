@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <assert.h>
-#include "include/BigNum.h"
+#include "BigNum.h"
 
 int main()
 {
@@ -89,8 +89,6 @@ int main()
         }
         std::cout << ">= okay!\n";
 
-        std::cout << "\n";
-
         /// test +
         while (file >> a >> b >> c)
         {
@@ -98,7 +96,6 @@ int main()
 
             BigNum::BigNum num1(a);
             BigNum::BigNum num2(b);
-            std::cout << BigNum::BigNum(num1 + num2).toString() << " == " << c << "\n";
             assert (BigNum::BigNum(num1 + num2).toString() == c);
         }
         std::cout << "+  okay!\n";
@@ -110,7 +107,6 @@ int main()
 
             BigNum::BigNum num1(a);
             BigNum::BigNum num2(b);
-            std::cout << BigNum::BigNum(num1 - num2).toString() << " == " << c << "\n";
             assert (BigNum::BigNum(num1 - num2).toString() == c);
         }
         std::cout << "-  okay!\n";
